@@ -40,8 +40,8 @@ public class EfBasicTests
     [Fact]
     public async Task DatabasesAreIsolated()
     {
-        await using var database1 = await pgInstance.Build();
-        await using var database2 = await pgInstance.Build();
+        await using var database1 = await pgInstance.Build(databaseSuffix: "db1");
+        await using var database2 = await pgInstance.Build(databaseSuffix: "db2");
 
         // Insert into database1
         database1.Context.Users.Add(new User { Name = "User 1", Email = "user1@example.com" });

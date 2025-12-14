@@ -54,8 +54,8 @@ public class BasicTests
     [Fact]
     public async Task DatabasesAreIsolated()
     {
-        await using var database1 = await pgInstance.Build();
-        await using var database2 = await pgInstance.Build();
+        await using var database1 = await pgInstance.Build("DatabasesAreIsolated_db1");
+        await using var database2 = await pgInstance.Build("DatabasesAreIsolated_db2");
 
         // Insert into database1
         await using (var command = database1.Connection.CreateCommand())

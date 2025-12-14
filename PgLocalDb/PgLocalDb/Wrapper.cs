@@ -109,6 +109,7 @@ class Wrapper
 
         if (shouldRebuild)
         {
+            await UnmarkAsTemplate(masterConnection, templateDbName);
             await TerminateDatabaseConnections(masterConnection, templateDbName);
             await DropDatabaseIfExists(masterConnection, templateDbName);
 
@@ -187,6 +188,14 @@ class Wrapper
         await dropCommand.ExecuteNonQueryAsync();
     }
 
+    async Task UnmarkAsTemplate(NpgsqlConnection masterConnection, string dbName)
+    {
+        await using var updateCommand = new NpgsqlCommand(
+            $"UPDATE pg_database SET datistemplate = FALSE WHERE datname = '{dbName}'",
+            masterConnection);
+        await updateCommand.ExecuteNonQueryAsync();
+    }
+
     public async Task DeleteDatabase(string name)
     {
         var dbName = $"pglocaldb_{instance}_{name}";
@@ -210,6 +219,7 @@ class Wrapper
         createdDatabases.Clear();
 
         // Delete the template database
+        await UnmarkAsTemplate(masterConnection, templateDbName);
         await TerminateDatabaseConnections(masterConnection, templateDbName);
         await DropDatabaseIfExists(masterConnection, templateDbName);
 
