@@ -1,0 +1,14 @@
+global using System;
+global using System.Collections.Generic;
+global using System.Data.Common;
+global using System.IO;
+global using System.Linq;
+global using System.Reflection;
+global using System.Runtime.CompilerServices;
+global using System.Threading.Tasks;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Infrastructure;
+global using Microsoft.EntityFrameworkCore.Metadata;
+global using Npgsql;
+global using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure;
+global using PgLocalDb;
