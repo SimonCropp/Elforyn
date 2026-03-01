@@ -1,0 +1,26 @@
+# Design
+
+There is a tiered approach to the API.
+
+PgInstance > PgDatabase > DbContext/NpgsqlConnection
+
+From an API perspective:
+
+`PgInstance<TDbContext>` > `PgDatabase<TDbContext>` > `TDbContext`/`NpgsqlConnection`
+
+
+Multiple PgDatabases can exist inside each PgInstance. Multiple DbContexts/NpgsqlConnections can be created to talk to a PgDatabase.
+
+When a PgInstance is defined, a template database is created. All subsequent PgDatabases created from that PgInstance will be based on this template via `CREATE DATABASE ... TEMPLATE`. The template allows schema and data to be created once, instead of every time a PgDatabase is required. This results in improved performance by not requiring to re-create/re-migrate the PgDatabase schema/data on each use.
+
+The usual approach for consuming the API in a test project is as follows.
+
+ * Single PgInstance per test project.
+ * Single PgDatabase per test (or instance of a parameterized test).
+ * One or more DbContexts/NpgsqlConnections used within a test.
+
+This assumes that there is a schema and data (and DbContext in the EntityFramework context) used for all tests. If those caveats are not correct then multiple PgInstances can be used.
+
+More information:
+
+ * [EntityFramework Core Usage](/pages/ef-usage.md)
