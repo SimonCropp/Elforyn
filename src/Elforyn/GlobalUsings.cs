@@ -1,0 +1,16 @@
+global using Npgsql;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Diagnostics;
+global using Microsoft.EntityFrameworkCore.Infrastructure;
+global using Microsoft.EntityFrameworkCore.Metadata;
+global using Microsoft.EntityFrameworkCore.Storage;
+global using System.ComponentModel;
+global using Elforyn;
+global using Microsoft.EntityFrameworkCore.Migrations;
+global using Microsoft.EntityFrameworkCore.Migrations.Operations;
+global using Microsoft.EntityFrameworkCore.Query;
+global using Microsoft.EntityFrameworkCore.Query.Internal;
+global using Npgsql.EntityFrameworkCore.PostgreSQL.Query.Internal;
+global using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal;
+global using Microsoft.Extensions.DependencyInjection;
+global using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure;

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Description>Provides a wrapper around PostgreSQL to simplify running tests that require Entity Framework.</Description>
+    <PackageTags>EntityFrameworkCore, EntityFramework, PostgreSQL, Testing</PackageTags>
+    <PolyEnsure>true</PolyEnsure>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MethodTimer.Fody" PrivateAssets="All" />
+    <PackageReference Include="ConfigureAwait.Fody" PrivateAssets="All" />
+    <PackageReference Include="Fody" PrivateAssets="all" />
+    <PackageReference Include="Polyfill" PrivateAssets="all" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="Npgsql" />
+    <PackageReference Include="ProjectDefaults" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+</Project>

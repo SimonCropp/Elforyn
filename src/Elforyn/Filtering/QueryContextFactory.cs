@@ -1,0 +1,20 @@
+#pragma warning disable EF1001
+// ReSharper disable once ClassNeverInstantiated.Global
+class QueryContextFactory(QueryCompilationContextDependencies dependencies, RelationalQueryCompilationContextDependencies relationalDependencies) :
+    NpgsqlQueryCompilationContextFactory(dependencies, relationalDependencies)
+{
+    [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "<IgnoreQueryFilters>k__BackingField")]
+    private static extern ref bool IgnoreQueryFilters(QueryCompilationContext context);
+
+    public override QueryCompilationContext Create(bool async)
+    {
+        var context = base.Create(async);
+
+        if (QueryFilter.IsDisabled)
+        {
+            IgnoreQueryFilters(context) = true;
+        }
+
+        return context;
+    }
+}

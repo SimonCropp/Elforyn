@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Description>.</Description>
+    <PackageTags>EntityFrameworkCore, EntityFramework, PostgreSQL, Testing, VerifyTests</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Elforyn\Elforyn.csproj" />
+    <PackageReference Include="ProjectDefaults" PrivateAssets="all" />
+    <Compile Include="..\Elforyn.MSTest\CombinationCallbackSetup.cs" Link="CombinationCallbackSetup.cs" />
+    <Compile Include="..\Elforyn.MSTest\ILocalDbTestBase.cs" Link="ILocalDbTestBase.cs" />
+    <Compile Include="..\Elforyn.MSTest\Phase.cs" Link="Phase.cs" />
+    <Compile Include="..\Elforyn.MSTest\SharedDbAttribute.cs" Link="SharedDbAttribute.cs" />
+    <Compile Include="..\Elforyn.MSTest\SharedDbWithTransactionAttribute.cs" Link="SharedDbWithTransactionAttribute.cs" />
+    <Compile Include="..\Elforyn.MSTest\QueryableSettingsTask\QueryableSettingsTask.cs" Link="QueryableSettingsTask\QueryableSettingsTask.cs" />
+    <Compile Include="..\Elforyn.MSTest\QueryableSettingsTask\NestedQueryableSettingsTask.cs" Link="QueryableSettingsTask\NestedQueryableSettingsTask.cs" />
+    <PackageReference Include="Verify.EntityFramework" />
+    <PackageReference Include="Verify.NUnit" />
+    <PackageReference Include="Argon" />
+    <PackageReference Include="DiffEngine" />
+    <PackageReference Include="EmptyFiles" />
+    <PackageReference Include="SimpleInfoName" />
+    <PackageReference Include="Verify" />
+  </ItemGroup>
+</Project>

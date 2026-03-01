@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="Elforyn\Elforyn.csproj" />
+  <Project Path="Elforyn.MSTest\Elforyn.MSTest.csproj" />
+  <Project Path="Elforyn.NUnit\Elforyn.NUnit.csproj" />
+  <Project Path="Elforyn.Xunit.V3\Elforyn.Xunit.V3.csproj" />
+  <Project Path="Elforyn.TUnit\Elforyn.TUnit.csproj" />
+  <Project Path="Elforyn.Tests\Elforyn.Tests.csproj" />
+</Solution>
