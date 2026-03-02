@@ -131,8 +131,7 @@ class Wrapper : IDisposable
             }
 
             // Timestamp mismatch - rebuild
-            await masterConnection.ExecuteCommandAsync($"""ALTER DATABASE "{templateName}" IS_TEMPLATE false""");
-            await masterConnection.ExecuteCommandAsync($"""DROP DATABASE IF EXISTS "{templateName}" WITH (FORCE)""");
+            await DropTemplateDatabase(masterConnection);
         }
 
         // Create new template database
@@ -200,9 +199,32 @@ class Wrapper : IDisposable
     public async Task DeleteInstance()
     {
         await using var connection = await OpenMasterConnection();
-        await connection.ExecuteCommandAsync($"""ALTER DATABASE "{templateName}" IS_TEMPLATE false""");
-        await connection.ExecuteCommandAsync($"""DROP DATABASE IF EXISTS "{templateName}" WITH (FORCE)""");
+        await DropTemplateDatabase(connection);
         Dispose();
+    }
+
+    async Task DropTemplateDatabase(NpgsqlConnection connection)
+    {
+        if (!await DatabaseExists(connection, templateName))
+        {
+            return;
+        }
+
+        if (await IsTemplate(connection, templateName))
+        {
+            await connection.ExecuteCommandAsync($"""ALTER DATABASE "{templateName}" IS_TEMPLATE false""");
+        }
+
+        await connection.ExecuteCommandAsync($"""DROP DATABASE IF EXISTS "{templateName}" WITH (FORCE)""");
+    }
+
+    static async Task<bool> IsTemplate(NpgsqlConnection connection, string dbName)
+    {
+        await using var cmd = connection.CreateCommand();
+        cmd.CommandText = "SELECT datistemplate FROM pg_database WHERE datname = @name";
+        cmd.Parameters.AddWithValue("name", dbName);
+        var result = await cmd.ExecuteScalarAsync();
+        return result is true;
     }
 
     public void Dispose() => semaphoreSlim.Dispose();

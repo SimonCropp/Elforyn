@@ -216,4 +216,4 @@ The connection details will be written to [Trace.WriteLine](https://docs.microso
 
 ## Icon
 
-[Robot](https://thenounproject.com/term/robot/960055/) designed by [Creaticca Creative Agency](https://thenounproject.com/creaticca/) from [The Noun Project](https://thenounproject.com/).
+[Elephant](https://thenounproject.com/icon/elephant-8188383/) from [The Noun Project](https://thenounproject.com/).
