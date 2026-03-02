@@ -30,7 +30,7 @@ class Wrapper : IDisposable
             throw new("The database name 'template' is reserved.");
         }
 
-        var dbName = TruncateIdentifier($"elforyn_{name}".ToLowerInvariant());
+        var dbName = TruncateIdentifier($"{templateName}_{name}".ToLowerInvariant());
 
         await startupTask;
 
@@ -58,7 +58,7 @@ class Wrapper : IDisposable
     public async Task<NpgsqlConnection> OpenExistingDatabase(string name)
     {
         await startupTask;
-        var dbName = TruncateIdentifier($"elforyn_{name}".ToLowerInvariant());
+        var dbName = TruncateIdentifier($"{templateName}_{name}".ToLowerInvariant());
         var dbConnectionString = ElforynSettings.BuildConnectionString(connectionString, dbName);
         var connection = new NpgsqlConnection(dbConnectionString);
         await connection.OpenAsync();
@@ -190,7 +190,7 @@ class Wrapper : IDisposable
     [Time("dbName: '{dbName}'")]
     public async Task DeleteDatabase(string dbName)
     {
-        var fullName = TruncateIdentifier($"elforyn_{dbName}".ToLowerInvariant());
+        var fullName = TruncateIdentifier($"{templateName}_{dbName}".ToLowerInvariant());
         await using var connection = await OpenMasterConnection();
         await connection.ExecuteCommandAsync($"""DROP DATABASE IF EXISTS "{fullName}" WITH (FORCE)""");
     }
