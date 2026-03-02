@@ -146,6 +146,8 @@ class Wrapper : IDisposable
             {
                 await callback(templateConnection);
             }
+            // Compact the template database to minimize file-level copy size
+            await templateConnection.ExecuteCommandAsync("VACUUM FULL");
         }
 
         // Store timestamp as a database comment
