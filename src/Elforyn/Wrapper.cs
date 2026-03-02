@@ -1,12 +1,8 @@
-using System.Security.Cryptography;
-using System.Text;
-using MethodTimer;
-
 class Wrapper : IDisposable
 {
-    const int MaxIdentifierLength = 63;
     string connectionString;
     string templateName;
+    string sharedDbName;
     Func<NpgsqlConnection, Task>? callback;
     SemaphoreSlim semaphoreSlim = new(1, 1);
     SemaphoreSlim sharedLock = new(1, 1);
@@ -20,7 +16,9 @@ class Wrapper : IDisposable
     {
         ElforynLogging.WrapperCreated = true;
         this.connectionString = connectionString;
-        templateName = TruncateIdentifier($"elforyn_template_{name}".ToLowerInvariant());
+        var lowerName = name.ToLowerInvariant();
+        templateName = TruncateIdentifier($"elforyn_{lowerName}");
+        sharedDbName = $"shared_{lowerName}";
         this.callback = callback;
     }
 
@@ -75,7 +73,7 @@ class Wrapper : IDisposable
         {
             if (!sharedCreated)
             {
-                var initConnection = await CreateDatabaseFromTemplate("Shared");
+                var initConnection = await CreateDatabaseFromTemplate(sharedDbName);
                 if (initialize != null)
                 {
                     await initialize(initConnection);
@@ -90,7 +88,7 @@ class Wrapper : IDisposable
             sharedLock.Release();
         }
 
-        return await OpenExistingDatabase("Shared");
+        return await OpenExistingDatabase(sharedDbName);
     }
 
     void InnerStart(DateTime timestamp, Func<NpgsqlConnection, Task> buildTemplate) =>
@@ -222,22 +220,23 @@ class Wrapper : IDisposable
 
     static async Task<bool> IsTemplate(NpgsqlConnection connection, string dbName)
     {
-        await using var cmd = connection.CreateCommand();
-        cmd.CommandText = "SELECT datistemplate FROM pg_database WHERE datname = @name";
-        cmd.Parameters.AddWithValue("name", dbName);
-        var result = await cmd.ExecuteScalarAsync();
+        await using var command = connection.CreateCommand();
+        command.CommandText = "SELECT datistemplate FROM pg_database WHERE datname = @name";
+        command.Parameters.AddWithValue("name", dbName);
+        var result = await command.ExecuteScalarAsync();
         return result is true;
     }
 
     static string TruncateIdentifier(string name)
     {
-        if (name.Length <= MaxIdentifierLength)
+        const int maxIdentifierLength = 63;
+        if (name.Length <= maxIdentifierLength)
         {
             return name;
         }
 
         var hash = Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(name)))[..8];
-        return $"{name[..(MaxIdentifierLength - 9)]}_{hash}";
+        return $"{name[..(maxIdentifierLength - 9)]}_{hash}";
     }
 
     public void Dispose() => semaphoreSlim.Dispose();
