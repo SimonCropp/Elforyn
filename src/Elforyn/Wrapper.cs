@@ -215,15 +215,7 @@ class Wrapper : IDisposable
 
         foreach (var db in toDelete)
         {
-            // Unmark template first if applicable
-            try
-            {
-                await connection.ExecuteCommandAsync($"""ALTER DATABASE "{db}" IS_TEMPLATE false""");
-            }
-            catch
-            {
-                // ignore if not a template
-            }
+            await connection.ExecuteCommandAsync($"""ALTER DATABASE "{db}" IS_TEMPLATE false""");
             await connection.ExecuteCommandAsync($"""DROP DATABASE IF EXISTS "{db}" WITH (FORCE)""");
         }
 
