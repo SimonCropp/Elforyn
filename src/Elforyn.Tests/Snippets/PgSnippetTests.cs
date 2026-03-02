@@ -10,15 +10,11 @@ public class PgSnippetTests
             model.Entity<TheEntity>();
     }
 
-    static string ConnectionString =>
-        Environment.GetEnvironmentVariable("Elforyn_ConnectionString") ??
-        "Host=localhost;Username=postgres;Password=postgres";
-
     static PgInstance<MyDbContext> pgInstance;
 
     static PgSnippetTests() =>
         pgInstance = new(
-            ConnectionString,
+            ConnectionSettings.ConnectionString,
             builder => new(builder.Options));
 
     #region PgTest

@@ -12,15 +12,11 @@ public class PgBuildTemplate
 
     public class BuildTemplate
     {
-        static string ConnectionString =>
-            Environment.GetEnvironmentVariable("Elforyn_ConnectionString") ??
-            "Host=localhost;Username=postgres;Password=postgres";
-
         static PgInstance<TheDbContext> pgInstance;
 
         static BuildTemplate() =>
             pgInstance = new(
-                ConnectionString,
+                ConnectionSettings.ConnectionString,
                 constructInstance: builder => new(builder.Options),
                 buildTemplate: async context =>
                 {

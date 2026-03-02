@@ -12,15 +12,11 @@ public class PgTestBaseClass
 
     public abstract class TestBase
     {
-        static string ConnectionString =>
-            Environment.GetEnvironmentVariable("Elforyn_ConnectionString") ??
-            "Host=localhost;Username=postgres;Password=postgres";
-
         static PgInstance<TheDbContext> pgInstance;
 
         static TestBase() =>
             pgInstance = new(
-                ConnectionString,
+                ConnectionSettings.ConnectionString,
                 constructInstance: builder => new(builder.Options));
 
         public static Task<PgDatabase<TheDbContext>> LocalDb(

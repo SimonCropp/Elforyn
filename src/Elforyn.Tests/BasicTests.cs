@@ -1,14 +1,10 @@
 public class BasicTests
 {
-    static string ConnectionString =>
-        Environment.GetEnvironmentVariable("Elforyn_ConnectionString") ??
-        "Host=localhost;Username=postgres;Password=postgres";
-
     [Fact]
     public async Task BuildAndQuery()
     {
         var instance = new PgInstance<TestDbContext>(
-            ConnectionString,
+            ConnectionSettings.ConnectionString,
             constructInstance: builder => new(builder.Options));
 
         await using var database = await instance.Build("BuildAndQuery", null);
@@ -33,7 +29,7 @@ public class BasicTests
     public async Task BuildWithData()
     {
         var instance = new PgInstance<TestDbContext>(
-            ConnectionString,
+            ConnectionSettings.ConnectionString,
             constructInstance: builder => new(builder.Options));
 
         var data = new object[]

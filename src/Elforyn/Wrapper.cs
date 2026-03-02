@@ -200,25 +200,8 @@ class Wrapper : IDisposable
     public async Task DeleteInstance()
     {
         await using var connection = await OpenMasterConnection();
-
-        // Drop all elforyn_ databases
-        await using var cmd = connection.CreateCommand();
-        cmd.CommandText = "SELECT datname FROM pg_database WHERE datname LIKE 'elforyn_%'";
-        var toDelete = new List<string>();
-        await using (var reader = await cmd.ExecuteReaderAsync())
-        {
-            while (await reader.ReadAsync())
-            {
-                toDelete.Add(reader.GetString(0));
-            }
-        }
-
-        foreach (var db in toDelete)
-        {
-            await connection.ExecuteCommandAsync($"""ALTER DATABASE "{db}" IS_TEMPLATE false""");
-            await connection.ExecuteCommandAsync($"""DROP DATABASE IF EXISTS "{db}" WITH (FORCE)""");
-        }
-
+        await connection.ExecuteCommandAsync($"""ALTER DATABASE "{templateName}" IS_TEMPLATE false""");
+        await connection.ExecuteCommandAsync($"""DROP DATABASE IF EXISTS "{templateName}" WITH (FORCE)""");
         Dispose();
     }
 

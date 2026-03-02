@@ -12,15 +12,11 @@ public class StaticConstructor
 
     public class Tests
     {
-        static string ConnectionString =>
-            Environment.GetEnvironmentVariable("Elforyn_ConnectionString") ??
-            "Host=localhost;Username=postgres;Password=postgres";
-
         static PgInstance<TheDbContext> pgInstance;
 
         static Tests() =>
             pgInstance = new(
-                ConnectionString,
+                ConnectionSettings.ConnectionString,
                 builder => new(builder.Options));
 
         [Fact]

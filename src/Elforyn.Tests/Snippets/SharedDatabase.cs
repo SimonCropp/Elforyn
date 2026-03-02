@@ -8,15 +8,11 @@ public class SharedDatabase
         protected override void OnModelCreating(ModelBuilder model) => model.Entity<TheEntity>();
     }
 
-    static string ConnectionString =>
-        Environment.GetEnvironmentVariable("Elforyn_ConnectionString") ??
-        "Host=localhost;Username=postgres;Password=postgres";
-
     static PgInstance<TheDbContext> pgInstance;
 
     static SharedDatabase() =>
         pgInstance = new(
-            ConnectionString,
+            ConnectionSettings.ConnectionString,
             builder => new(builder.Options));
 
     #region PgSharedDatabase

@@ -14,8 +14,7 @@ public static class ConnectionSettings
         }
 
         ElforynSettings.ConnectionBuilder(_ => _.Timeout = 300);
-        PgTestBase<TheDbContext>.Initialize(ConnectionString);
     }
 
-    public static string ConnectionString { get; set; } = null!;
+    public static string ConnectionString { get; set; }
 }

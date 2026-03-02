@@ -2,13 +2,9 @@
 public class TimestampTests :
     PgTestBase<TimestampDbContext>
 {
-    static string ConnectionString =>
-        Environment.GetEnvironmentVariable("Elforyn_ConnectionString") ??
-        "Host=localhost;Username=postgres;Password=postgres";
-
     static TimestampTests() =>
         Initialize(
-            ConnectionString,
+            ConnectionSettings.ConnectionString,
             buildTemplate: async data =>
             {
                 await data.Database.EnsureCreatedAsync();
