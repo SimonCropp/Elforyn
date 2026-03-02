@@ -1,4 +1,4 @@
-# EntityFramework Core NUnit Usage
+# EntityFramework NUnit Usage
 
 Combines [Elforyn](/pages/ef-usage.md), [NUnit](https://nunit.org/), [Verify.NUnit](https://github.com/VerifyTests/Verify#verifynunit), and [Verify.EntityFramework](https://github.com/VerifyTests/Verify.EntityFramework) into a test base class that provides an isolated database per test with [Arrange-Act-Assert](https://learn.microsoft.com/en-us/visualstudio/test/unit-test-basics#write-your-tests) phase enforcement.
 

@@ -1,4 +1,4 @@
-# EntityFramework Core xunit.v3 Usage
+# EntityFramework xunit.v3 Usage
 
 Combines [Elforyn](/pages/ef-usage.md), [xunit.v3](https://xunit.net/), [Verify.XunitV3](https://github.com/VerifyTests/Verify#verifyxunitv3), and [Verify.EntityFramework](https://github.com/VerifyTests/Verify.EntityFramework) into a test base class that provides an isolated database per test with [Arrange-Act-Assert](https://learn.microsoft.com/en-us/visualstudio/test/unit-test-basics#write-your-tests) phase enforcement.
 

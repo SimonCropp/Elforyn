@@ -1,0 +1,27 @@
+﻿{
+  target: {
+    Id: Guid_1,
+    Name: value2
+  },
+  ef: [
+    {
+      Type: ReaderExecutedAsync,
+      HasTransaction: false,
+      Text:
+SELECT c."Id", c."Name"
+FROM "Companies" AS c
+LIMIT 2
+    },
+    {
+      Type: ReaderExecutedAsync,
+      HasTransaction: false,
+      Parameters: {
+        @p0 (String): value2,
+        @p1 (Guid): Guid_1
+      },
+      Text:
+UPDATE "Companies" SET "Name" = @p0
+WHERE "Id" = @p1;
+    }
+  ]
+}

@@ -5,6 +5,18 @@
   <Project Path="Elforyn.Xunit.V3\Elforyn.Xunit.V3.csproj" />
   <Project Path="Elforyn.TUnit\Elforyn.TUnit.csproj" />
   <Project Path="Elforyn.Tests\Elforyn.Tests.csproj" />
+  <Folder Name="/SolutionItems/">
+    <File Path="../.editorconfig" />
+    <File Path="../.gitattributes" />
+    <File Path="../.gitignore" />
+    <File Path="../CLAUDE.md" />
+    <File Path="../global.json" />
+    <File Path="../readme.source.md" />
+    <File Path="appveyor.yml" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="mdsnippets.json" />
+  </Folder>
   <Project Path="Elforyn.MSTest.Tests\Elforyn.MSTest.Tests.csproj" />
   <Project Path="Elforyn.NUnit.Tests\Elforyn.NUnit.Tests.csproj" />
   <Project Path="Elforyn.Xunit.V3.Tests\Elforyn.Xunit.V3.Tests.csproj" />

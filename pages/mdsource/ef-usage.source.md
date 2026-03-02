@@ -1,6 +1,6 @@
-# EntityFramework Core Usage
+# EntityFramework Usage
 
-Interactions with PostgreSQL via [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/).
+Interactions with PostgreSQL via [Entity Framework](https://docs.microsoft.com/en-us/ef/core/).
 
 
 ## Elforyn package [![NuGet Status](https://img.shields.io/nuget/v/Elforyn.svg)](https://www.nuget.org/packages/Elforyn/)

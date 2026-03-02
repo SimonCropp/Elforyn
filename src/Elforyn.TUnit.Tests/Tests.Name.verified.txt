@@ -1,0 +1,4 @@
+﻿{
+  Name: Tests_Name,
+  DataSource: tcp://localhost:5432
+}

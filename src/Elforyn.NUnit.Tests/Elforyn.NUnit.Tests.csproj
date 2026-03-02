@@ -22,6 +22,8 @@
     <Using Include="NUnit.Framework.Assert" Static="True" />
     <ProjectReference Include="..\Elforyn.NUnit\Elforyn.NUnit.csproj" />
     <ProjectReference Include="..\Elforyn\Elforyn.csproj" />
+    <Compile Include="..\Elforyn.MSTest.Tests\ModuleInitializer.cs" />
+    <Compile Include="..\Elforyn.MSTest.Tests\ConnectionSettings.cs" />
     <Compile Include="..\Elforyn.MSTest.Tests\Model\Company.cs" Link="Model\Company.cs" />
     <Compile Include="..\Elforyn.MSTest.Tests\Model\Employee.cs" Link="Model\Employee.cs" />
     <Compile Include="..\Elforyn.MSTest.Tests\Model\Vehicle.cs" Link="Model\Vehicle.cs" />

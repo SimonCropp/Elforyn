@@ -11,7 +11,9 @@ public static class ElforynSettings
     {
         var builder = new NpgsqlConnectionStringBuilder(connectionString)
         {
-            Database = database
+            Database = database,
+            Pooling = false,
+            IncludeErrorDetail = true
         };
         connectionBuilder?.Invoke(builder);
         return builder.ConnectionString;

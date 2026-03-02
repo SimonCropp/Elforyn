@@ -14,12 +14,12 @@ include: intro
 
 toc
   * [Design](/pages/design.md)
-  * [EntityFramework Core Usage](/pages/ef-usage.md)
-  * [EntityFramework Core NUnit Usage](/pages/ef-nunit-usage.md)
-  * [EntityFramework Core xunit.v3 Usage](/pages/ef-xunitv3-usage.md)
-  * [EntityFramework Core MSTest Usage](/pages/ef-mstest-usage.md)
-  * [EntityFramework Core TUnit Usage](/pages/ef-tunit-usage.md)
-  * [EntityFramework Core Migrations](/pages/efmigrations.md)
+  * [EntityFramework Usage](/pages/ef-usage.md)
+  * [EntityFramework NUnit Usage](/pages/ef-nunit-usage.md)
+  * [EntityFramework xunit.v3 Usage](/pages/ef-xunitv3-usage.md)
+  * [EntityFramework MSTest Usage](/pages/ef-mstest-usage.md)
+  * [EntityFramework TUnit Usage](/pages/ef-tunit-usage.md)
+  * [EntityFramework Migrations](/pages/efmigrations.md)
   * [Logging](/pages/logging.md)
   * [Template Re-generation](/pages/template-regen.md)
 

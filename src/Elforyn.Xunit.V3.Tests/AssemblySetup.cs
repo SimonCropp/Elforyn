@@ -2,11 +2,10 @@
 
 public class AssemblySetup : IAsyncDisposable
 {
-    public ValueTask DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
-        PgTestBase<TheDbContext>.Shutdown();
-        PgTestBase<DefaultTimestampDbContext>.Shutdown();
-        PgTestBase<TimestampDbContext>.Shutdown();
-        return ValueTask.CompletedTask;
+        await PgTestBase<TheDbContext>.Shutdown();
+        await PgTestBase<DefaultTimestampDbContext>.Shutdown();
+        await PgTestBase<TimestampDbContext>.Shutdown();
     }
 }

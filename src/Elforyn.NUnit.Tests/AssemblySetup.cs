@@ -2,10 +2,10 @@
 public class AssemblySetup
 {
     [OneTimeTearDown]
-    public void Cleanup()
+    public async Task Cleanup()
     {
-        PgTestBase<TheDbContext>.Shutdown();
-        PgTestBase<DefaultTimestampDbContext>.Shutdown();
-        PgTestBase<TimestampDbContext>.Shutdown();
+        await PgTestBase<TheDbContext>.Shutdown();
+        await PgTestBase<DefaultTimestampDbContext>.Shutdown();
+        await PgTestBase<TimestampDbContext>.Shutdown();
     }
 }

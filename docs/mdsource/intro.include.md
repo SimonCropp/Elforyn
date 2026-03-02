@@ -1,1 +1,0 @@
-Provides a wrapper around [PostgreSQL](https://www.postgresql.org/) to simplify running tests against [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/) using `CREATE DATABASE ... TEMPLATE` for fast per-test database isolation.
