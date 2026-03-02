@@ -1,5 +1,5 @@
 #region PgSnippetTests
-public class PgSnippetTests
+public class PgSnippetTests(PgSnippetTests.Fixture fixture) : IClassFixture<PgSnippetTests.Fixture>
 {
     public class MyDbContext(DbContextOptions options) :
         DbContext(options)
@@ -10,12 +10,20 @@ public class PgSnippetTests
             model.Entity<TheEntity>();
     }
 
-    static PgInstance<MyDbContext> pgInstance;
-
-    static PgSnippetTests() =>
-        pgInstance = new(
+    public class Fixture : IAsyncDisposable
+    {
+        public PgInstance<MyDbContext> PgInstance { get; } = new(
             ConnectionSettings.ConnectionString,
             builder => new(builder.Options));
+
+        public async ValueTask DisposeAsync()
+        {
+            await PgInstance.Cleanup();
+            PgInstance.Dispose();
+        }
+    }
+
+    PgInstance<MyDbContext> pgInstance = fixture.PgInstance;
 
     #region PgTest
 
@@ -70,11 +78,4 @@ public class PgSnippetTests
     }
 
     #endregion
-
-    [Fact]
-    public async Task Cleanup()
-    {
-        await pgInstance.Cleanup();
-        pgInstance.Dispose();
-    }
 }

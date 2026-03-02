@@ -10,12 +10,11 @@ public class PgBuildTemplate
 
     #region PgBuildTemplate
 
-    public class BuildTemplate
+    public class BuildTemplate(PgBuildTemplate.BuildTemplate.Fixture fixture) : IClassFixture<PgBuildTemplate.BuildTemplate.Fixture>
     {
-        static PgInstance<TheDbContext> pgInstance;
-
-        static BuildTemplate() =>
-            pgInstance = new(
+        public class Fixture : IAsyncDisposable
+        {
+            public PgInstance<TheDbContext> PgInstance { get; } = new(
                 ConnectionSettings.ConnectionString,
                 constructInstance: builder => new(builder.Options),
                 buildTemplate: async context =>
@@ -29,6 +28,15 @@ public class PgBuildTemplate
                     await context.SaveChangesAsync();
                 });
 
+            public async ValueTask DisposeAsync()
+            {
+                await PgInstance.Cleanup();
+                PgInstance.Dispose();
+            }
+        }
+
+        PgInstance<TheDbContext> pgInstance = fixture.PgInstance;
+
         [Fact]
         public async Task BuildTemplateTest()
         {
@@ -38,12 +46,5 @@ public class PgBuildTemplate
         }
 
         #endregion
-
-        [Fact]
-        public async Task Cleanup()
-        {
-            await pgInstance.Cleanup();
-            pgInstance.Dispose();
-        }
     }
 }

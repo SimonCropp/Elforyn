@@ -1,4 +1,4 @@
-public class SharedDatabase
+public class SharedDatabase(SharedDatabase.Fixture fixture) : IClassFixture<SharedDatabase.Fixture>
 {
     public class TheDbContext(DbContextOptions options) :
         DbContext(options)
@@ -8,12 +8,20 @@ public class SharedDatabase
         protected override void OnModelCreating(ModelBuilder model) => model.Entity<TheEntity>();
     }
 
-    static PgInstance<TheDbContext> pgInstance;
-
-    static SharedDatabase() =>
-        pgInstance = new(
+    public class Fixture : IAsyncDisposable
+    {
+        public PgInstance<TheDbContext> PgInstance { get; } = new(
             ConnectionSettings.ConnectionString,
             builder => new(builder.Options));
+
+        public async ValueTask DisposeAsync()
+        {
+            await PgInstance.Cleanup();
+            PgInstance.Dispose();
+        }
+    }
+
+    PgInstance<TheDbContext> pgInstance = fixture.PgInstance;
 
     #region PgSharedDatabase
 
@@ -45,11 +53,4 @@ public class SharedDatabase
     }
 
     #endregion
-
-    [Fact]
-    public async Task Cleanup()
-    {
-        await pgInstance.Cleanup();
-        pgInstance.Dispose();
-    }
 }

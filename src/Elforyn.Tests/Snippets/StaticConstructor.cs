@@ -10,14 +10,22 @@ public class StaticConstructor
 
     #region PgStaticConstructor
 
-    public class Tests
+    public class Tests(StaticConstructor.Tests.Fixture fixture) : IClassFixture<StaticConstructor.Tests.Fixture>
     {
-        static PgInstance<TheDbContext> pgInstance;
-
-        static Tests() =>
-            pgInstance = new(
+        public class Fixture : IAsyncDisposable
+        {
+            public PgInstance<TheDbContext> PgInstance { get; } = new(
                 ConnectionSettings.ConnectionString,
                 builder => new(builder.Options));
+
+            public async ValueTask DisposeAsync()
+            {
+                await PgInstance.Cleanup();
+                PgInstance.Dispose();
+            }
+        }
+
+        PgInstance<TheDbContext> pgInstance = fixture.PgInstance;
 
         [Fact]
         public async Task Test()
@@ -31,12 +39,5 @@ public class StaticConstructor
         }
 
         #endregion
-
-        [Fact]
-        public async Task Cleanup()
-        {
-            await pgInstance.Cleanup();
-            pgInstance.Dispose();
-        }
     }
 }
