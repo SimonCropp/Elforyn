@@ -1,7 +1,10 @@
+using System.Security.Cryptography;
+using System.Text;
 using MethodTimer;
 
 class Wrapper : IDisposable
 {
+    const int MaxIdentifierLength = 63;
     string connectionString;
     string templateName;
     Func<NpgsqlConnection, Task>? callback;
@@ -17,7 +20,7 @@ class Wrapper : IDisposable
     {
         ElforynLogging.WrapperCreated = true;
         this.connectionString = connectionString;
-        templateName = $"elforyn_template_{name}".ToLowerInvariant();
+        templateName = TruncateIdentifier($"elforyn_template_{name}".ToLowerInvariant());
         this.callback = callback;
     }
 
@@ -29,7 +32,7 @@ class Wrapper : IDisposable
             throw new("The database name 'template' is reserved.");
         }
 
-        var dbName = $"elforyn_{name}".ToLowerInvariant();
+        var dbName = TruncateIdentifier($"elforyn_{name}".ToLowerInvariant());
 
         await startupTask;
 
@@ -57,7 +60,7 @@ class Wrapper : IDisposable
     public async Task<NpgsqlConnection> OpenExistingDatabase(string name)
     {
         await startupTask;
-        var dbName = $"elforyn_{name}".ToLowerInvariant();
+        var dbName = TruncateIdentifier($"elforyn_{name}".ToLowerInvariant());
         var dbConnectionString = ElforynSettings.BuildConnectionString(connectionString, dbName);
         var connection = new NpgsqlConnection(dbConnectionString);
         await connection.OpenAsync();
@@ -189,7 +192,7 @@ class Wrapper : IDisposable
     [Time("dbName: '{dbName}'")]
     public async Task DeleteDatabase(string dbName)
     {
-        var fullName = $"elforyn_{dbName}".ToLowerInvariant();
+        var fullName = TruncateIdentifier($"elforyn_{dbName}".ToLowerInvariant());
         await using var connection = await OpenMasterConnection();
         await connection.ExecuteCommandAsync($"""DROP DATABASE IF EXISTS "{fullName}" WITH (FORCE)""");
     }
@@ -224,6 +227,17 @@ class Wrapper : IDisposable
         cmd.Parameters.AddWithValue("name", dbName);
         var result = await cmd.ExecuteScalarAsync();
         return result is true;
+    }
+
+    static string TruncateIdentifier(string name)
+    {
+        if (name.Length <= MaxIdentifierLength)
+        {
+            return name;
+        }
+
+        var hash = Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(name)))[..8];
+        return $"{name[..(MaxIdentifierLength - 9)]}_{hash}";
     }
 
     public void Dispose() => semaphoreSlim.Dispose();
