@@ -9,11 +9,15 @@ public class BasicTests
     {
         var instance = new PgInstance<TestDbContext>(
             ConnectionString,
-            constructInstance: builder => new TestDbContext(builder.Options));
+            constructInstance: builder => new(builder.Options));
 
         await using var database = await instance.Build("BuildAndQuery", null);
 
-        database.Context.TestEntities.Add(new TestEntity { Name = "Test1" });
+        database.Context.TestEntities.Add(
+            new()
+            {
+                Name = "Test1"
+            });
         await database.Context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var count = await database.Count<TestEntity>();
@@ -30,7 +34,7 @@ public class BasicTests
     {
         var instance = new PgInstance<TestDbContext>(
             ConnectionString,
-            constructInstance: builder => new TestDbContext(builder.Options));
+            constructInstance: builder => new(builder.Options));
 
         var data = new object[]
         {

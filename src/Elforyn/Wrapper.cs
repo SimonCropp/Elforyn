@@ -91,10 +91,8 @@ class Wrapper : IDisposable
         return await OpenExistingDatabase("Shared");
     }
 
-    void InnerStart(DateTime timestamp, Func<NpgsqlConnection, Task> buildTemplate)
-    {
+    void InnerStart(DateTime timestamp, Func<NpgsqlConnection, Task> buildTemplate) =>
         startupTask = CreateTemplate(timestamp, buildTemplate);
-    }
 
     [Time("Timestamp: '{timestamp}'")]
     async Task CreateTemplate(

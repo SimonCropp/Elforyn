@@ -12,11 +12,6 @@ include: intro
 **See [Milestones](../../milestones?state=closed) for release notes.**
 
 
-## Sponsors
-
-include: zzz
-
-
 toc
   * [Design](/pages/design.md)
   * [EntityFramework Core Usage](/pages/ef-usage.md)
@@ -104,7 +99,9 @@ TUnit test base class wrapping Elforyn with Arrange-Act-Assert phase enforcement
 
 ## How this project works
 
+
 ### Inputs
+
 
 #### buildTemplate
 
@@ -131,6 +128,83 @@ A delegate executed after the template database has been created or mounted:
  * **Guaranteed to be called exactly once** per `PgInstance` at startup
  * Receives a NpgsqlConnection and DbContext for seeding reference data or post-creation setup
  * Called regardless of whether `buildTemplate` ran (useful for setup that must always occur)
+
+
+### PgInstance Startup Flow
+
+This flow happens once per `PgInstance`, usually once before any tests run.
+
+```mermaid
+flowchart TD
+    start[Start]
+    openMaster[Open Master Connection]
+    checkExists{Template DB<br>Exists?}
+    checkTimestamp{Timestamp<br>Match?}
+    checkCallback{Callback<br>Exists?}
+
+    dropTemplate[Drop Template DB]
+    createTemplateDb[Create Template DB]
+
+    subgraph openTemplateForNewBox[Open Template Connection]
+        runBuildTemplate[Run buildTemplate]
+        checkCallbackAfterBuild{Callback<br>Exists?}
+        runCallbackAfterBuild[Run Callback]
+    end
+
+    setTimestamp["Store Timestamp<br>(COMMENT ON DATABASE)"]
+    markTemplate["Mark as Template<br>(IS_TEMPLATE true)"]
+
+    subgraph openTemplateForExistingBox[Open Template Connection]
+        runCallback[Run Callback]
+    end
+
+    done[Done]
+
+    start --> openMaster
+    openMaster --> checkExists
+
+    checkExists -->|No| createTemplateDb
+
+    checkExists -->|Yes| checkTimestamp
+
+    checkTimestamp -->|Match| checkCallback
+    checkTimestamp -->|Mismatch| dropTemplate
+    dropTemplate --> createTemplateDb
+
+    createTemplateDb --> runBuildTemplate
+    runBuildTemplate --> checkCallbackAfterBuild
+    checkCallbackAfterBuild -->|Yes| runCallbackAfterBuild
+    checkCallbackAfterBuild -->|No| setTimestamp
+    runCallbackAfterBuild --> setTimestamp
+    setTimestamp --> markTemplate
+    markTemplate --> done
+
+    checkCallback -->|Yes| runCallback
+    checkCallback -->|No| done
+    runCallback --> done
+```
+
+
+### Create PgDatabase Flow
+
+This happens once per `PgInstance.Build`, usually once per test method.
+
+```mermaid
+flowchart TD
+    entry[Start]
+
+    subgraph openMaster[Open Master Connection]
+        dropIfExists["DROP DATABASE IF EXISTS"]
+        createFromTemplate["CREATE DATABASE ... TEMPLATE"]
+    end
+    openNewConn[Open New Connection]
+    returnConn[Return Connection]
+
+    entry --> dropIfExists
+    dropIfExists --> createFromTemplate
+    createFromTemplate --> openNewConn
+    openNewConn --> returnConn
+```
 
 
 ## Debugging

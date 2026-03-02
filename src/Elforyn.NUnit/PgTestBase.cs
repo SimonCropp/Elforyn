@@ -99,7 +99,7 @@ public abstract partial class PgTestBase<T> :
 
     public static async Task Shutdown()
     {
-        // ReSharper disable once ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (pgInstance != null)
         {
             await pgInstance.Cleanup();

@@ -33,10 +33,8 @@ public partial class PgInstance<TDbContext>
     public Task<PgDatabase<TDbContext>> Build(
         [CallerFilePath] string testFile = "",
         string? databaseSuffix = null,
-        [CallerMemberName] string memberName = "")
-    {
-        return Build(null, testFile, databaseSuffix, memberName);
-    }
+        [CallerMemberName] string memberName = "") =>
+        Build(null, testFile, databaseSuffix, memberName);
 
     public async Task<TDbContext> BuildContext(
         [CallerFilePath] string testFile = "",
@@ -74,10 +72,8 @@ public partial class PgInstance<TDbContext>
         return build.NewConnectionOwnedDbContext();
     }
 
-    public Task<PgDatabase<TDbContext>> Build(string dbName)
-    {
-        return Build(dbName, (IEnumerable<object>?) null);
-    }
+    public Task<PgDatabase<TDbContext>> Build(string dbName) =>
+        Build(dbName, (IEnumerable<object>?) null);
 
     public async Task<TDbContext> BuildContext(string dbName)
     {
