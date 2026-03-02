@@ -35,8 +35,7 @@ class Wrapper : IDisposable
 
         await using (var masterConnection = await OpenMasterConnection())
         {
-            await masterConnection.ExecuteCommandAsync($"""DROP DATABASE IF EXISTS "{dbName}" WITH (FORCE)""");
-            await masterConnection.ExecuteCommandAsync($"""CREATE DATABASE "{dbName}" TEMPLATE "{templateName}" """);
+            await masterConnection.ExecuteCommandAsync($"""DROP DATABASE IF EXISTS "{dbName}" WITH (FORCE); CREATE DATABASE "{dbName}" TEMPLATE "{templateName}" """);
         }
 
         var dbConnectionString = ElforynSettings.BuildConnectionString(connectionString, dbName);
