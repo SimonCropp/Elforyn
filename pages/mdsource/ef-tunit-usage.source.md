@@ -12,11 +12,11 @@ https://nuget.org/packages/Elforyn.TUnit/
 
 The snippets use a DbContext of the following form:
 
-snippet: Elforyn.TUnit.Tests/Model/TheDbContext.cs
+snippet: Elforyn.MSTest.Tests/Model/TheDbContext.cs
 
-snippet: Elforyn.TUnit.Tests/Model/Company.cs
+snippet: Elforyn.MSTest.Tests/Model/Company.cs
 
-snippet: Elforyn.TUnit.Tests/Model/Employee.cs
+snippet: Elforyn.MSTest.Tests/Model/Employee.cs
 
 
 ## Initialize
